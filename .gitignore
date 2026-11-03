@@ -1,46 +1,35 @@
-# Ignore all image/media files
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.bmp
-*.tiff
-*.ico
-*.svg
-*.webp
-*.mp4
-*.mp3
-*.wav
-*.ogg
-*.flac
-*.avi
-*.mov
-*.mkv
-*.webm
+# Build output
+build/
+out/
+cmake-build-*/
+compile_commands.json
+CMakeUserPresets.json
+LocalConfig.cmake
 
-# Ignore Visual Studio folders
-**/.vs/
+# Generated artifacts (models, plans, results)
+models/*
+plans/*
+output/
+data/calibration/*
+!**/.gitkeep
+*.onnx
+*.plan
+*.engine
+*.cache
 
-# Ignore VS Code folders
-**/.vscode/
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
 
-# Ignore all build folders
-**/build/
-**/out/
-
-# Ignore common IDE or OS-specific files
+# IDE / OS (shared VS Code settings in .vscode/ are tracked on purpose)
+.vs/
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 .DS_Store
 Thumbs.db
-
-# Ignore ONNX Models and TRT Plans
-**/onnx-models.zip
-**/TRT-Plans/
-
-# Ignore log files
-**/.log
-
-# Ignore ping_pong_images
-ping_pong_images/
-
-# Ignore movie_effect
-**/movie_effect/
