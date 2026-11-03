@@ -16,6 +16,7 @@ PyTorch model ──(python/onnx_converter.py)──▶ model.onnx ──(onnx2t
 .
 ├── CMakeLists.txt          Build definition
 ├── CMakePresets.json       Ready-made configure/build presets (Windows + Linux)
+├── LocalConfig.cmake.example  Template for machine-specific dependency paths
 ├── src/
 │   ├── main.cpp            Command-line interface (build / infer)
 │   ├── trt_generation.*    ONNX -> TensorRT plan, incl. INT8 calibration
@@ -51,7 +52,24 @@ command line, so files can live anywhere.
 
 ### 1. Tell CMake where the dependencies are
 
-Set these once as environment variables, or pass them as `-D` flags to CMake (see below).
+Pick **one** of these. CMake checks them in this order: `-D` flag, then `LocalConfig.cmake`, then environment variable.
+
+**Option A - `LocalConfig.cmake` (no environment variables, recommended on Windows)**
+
+Copy the template and edit the paths. The copy is git-ignored, so it stays machine-specific.
+
+```powershell
+copy LocalConfig.cmake.example LocalConfig.cmake
+```
+
+```cmake
+set(TENSORRT_ROOT "C:/TensorRT-8.5.3.1")   # folder containing include/ and lib/
+set(OpenCV_DIR    "C:/opencv/build")       # folder containing OpenCVConfig.cmake
+```
+
+Use forward slashes. CUDA is found automatically from the CUDA installer; if not, set `CUDAToolkit_ROOT` in the same file.
+
+**Option B - environment variables**
 
 | Variable | Points to | Example |
 |---|---|---|
@@ -59,19 +77,14 @@ Set these once as environment variables, or pass them as `-D` flags to CMake (se
 | `OpenCV_DIR` | Folder containing `OpenCVConfig.cmake` | `C:\opencv\build` or `/usr/lib/cmake/opencv4` |
 | `CUDA_PATH` | CUDA install folder (set by the CUDA installer on Windows) | `/usr/local/cuda` |
 
-Windows (PowerShell, persists for new terminals):
-
 ```powershell
-setx TENSORRT_ROOT "C:\TensorRT-8.5.3.1"
-setx OpenCV_DIR    "C:\opencv\build"
+setx TENSORRT_ROOT "C:\TensorRT-8.5.3.1"      # Windows; restart VS Code afterwards
 ```
-
-Linux/macOS shell:
-
 ```bash
-export TENSORRT_ROOT=/opt/TensorRT-8.5.3.1
-export OpenCV_DIR=/usr/lib/cmake/opencv4
+export TENSORRT_ROOT=/opt/TensorRT-8.5.3.1    # Linux
 ```
+
+**Option C - `-D` flags**, see "Without presets" below.
 
 ### 2. Build
 
@@ -85,7 +98,7 @@ export OpenCV_DIR=/usr/lib/cmake/opencv4
 4. Press **F7** (or **CMake: Build**).
 
 The preset uses Ninja and, on Windows, CMake Tools sets up the MSVC environment for you.
-If VS Code was started before the environment variables were set, restart it.
+If you use environment variables and VS Code was started before they were set, restart it.
 
 **From a terminal**
 
@@ -193,7 +206,7 @@ and press **F5**.
 
 | Symptom | Fix |
 |---|---|
-| `TensorRT not found` | Set `TENSORRT_ROOT` (env var or `-DTENSORRT_ROOT=...`) and re-run CMake; delete the build folder if a stale cache persists |
+| `TensorRT not found` | Set `TENSORRT_ROOT` (`LocalConfig.cmake`, env var or `-DTENSORRT_ROOT=...`) and re-run CMake; delete the build folder if a stale cache persists |
 | `TensorRT 10.x found, but this project needs 8.x` | Install TensorRT 8.5.x |
 | `Could not find nvcc` | Install the CUDA Toolkit or set `CUDA_PATH` / `CUDAToolkit_ROOT` |
 | `OpenCV` not found | Set `OpenCV_DIR` to the folder containing `OpenCVConfig.cmake` |

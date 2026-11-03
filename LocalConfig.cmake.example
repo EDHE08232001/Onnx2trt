@@ -1,0 +1,20 @@
+# Machine-specific dependency paths.
+#
+# Copy this file to "LocalConfig.cmake" (git-ignored) and edit the paths. CMake loads it
+# automatically, so no environment variables are needed. Delete the lines you don't need.
+# Use forward slashes, even on Windows. A -D flag on the command line still takes precedence.
+
+# TensorRT: folder that contains include/ and lib/
+if(NOT TENSORRT_ROOT)
+  set(TENSORRT_ROOT "C:/TensorRT-8.5.3.1")
+endif()
+
+# OpenCV: folder that contains OpenCVConfig.cmake
+if(NOT OpenCV_DIR)
+  set(OpenCV_DIR "C:/opencv/build")
+endif()
+
+# CUDA Toolkit: only needed if CMake cannot find it (the CUDA installer normally sets CUDA_PATH)
+# if(NOT CUDAToolkit_ROOT)
+#   set(CUDAToolkit_ROOT "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.8")
+# endif()

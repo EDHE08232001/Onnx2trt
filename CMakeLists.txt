@@ -11,12 +11,16 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 # ---------------------------------------------------------------------------
-# Dependencies. Each can be located through a CMake variable (-D...) or an
-# environment variable of the same name; see README.md.
-#   CUDA      CUDA_PATH / CUDAToolkit_ROOT
+# Dependencies. Locations are read, in priority order, from:
+#   1. -D flags on the cmake command line
+#   2. LocalConfig.cmake next to this file (copy LocalConfig.cmake.example)
+#   3. environment variables of the same name
+#   CUDA      CUDAToolkit_ROOT / CUDA_PATH
 #   TensorRT  TENSORRT_ROOT   (folder containing include/ and lib/)
 #   OpenCV    OpenCV_DIR      (folder containing OpenCVConfig.cmake)
 # ---------------------------------------------------------------------------
+
+include("${CMAKE_CURRENT_SOURCE_DIR}/LocalConfig.cmake" OPTIONAL)
 
 find_package(CUDAToolkit REQUIRED)
 
