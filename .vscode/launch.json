@@ -1,0 +1,23 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "onnx2trt build (edit args)",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${command:cmake.launchTargetPath}",
+      "args": ["build", "--onnx", "models/model.onnx", "--plan", "plans/model.plan", "--precision", "fp16"],
+      "cwd": "${workspaceFolder}",
+      "windows": { "type": "cppvsdbg" }
+    },
+    {
+      "name": "onnx2trt infer (edit args)",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${command:cmake.launchTargetPath}",
+      "args": ["infer", "--plan", "plans/model.plan", "--input", "data/sample.jpg"],
+      "cwd": "${workspaceFolder}",
+      "windows": { "type": "cppvsdbg" }
+    }
+  ]
+}
